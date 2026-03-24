@@ -47,22 +47,11 @@ public final class ProfileModel {
         validateInvariant();
     }
 
-    public static ProfileModel create(UUID id,
-                                      UUID userId,
-                                      String bio,
-                                      GenderEnum genderEnum,
-                                      LocalDate birthDate,
-                                      String city,
-                                      String country) {
-        LocalDateTime now = LocalDateTime.now();
-        return new ProfileModel(id, userId, bio, genderEnum, birthDate, city, country, now);
-    }
-
     private void validateInvariant() {
         if (userId == null) throw new IllegalArgumentException("userId required");
         if (birthDate == null) throw new IllegalArgumentException("birthDate required");
         int age = getAge();
-        if (age < 13) throw new IllegalArgumentException("age must be >= 13");
+        if (age < 18) throw new IllegalArgumentException("age must be >= 13");
         if (bio != null && bio.length() > 1000) throw new IllegalArgumentException("bio too long");
         if (city == null || city.isBlank()) throw new IllegalArgumentException("city required");
         if (country == null || country.isBlank()) throw new IllegalArgumentException("country required");
@@ -70,10 +59,6 @@ public final class ProfileModel {
 
     public int getAge() {
         return Period.between(birthDate, LocalDate.now()).getYears();
-    }
-
-    public boolean isAdult() {
-        return getAge() >= 18;
     }
 
     public void updateBio(String newBio) {

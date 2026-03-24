@@ -22,6 +22,7 @@ public class ProfileDaoService {
         return mapper.toDomain(repository.save(mapper.toEntity(profile)));
     }
 
+    @Transactional(readOnly = true)
     public Optional<ProfileModel> findById(UUID id) {
         return repository.findById(id).map(mapper::toDomain);
     }
